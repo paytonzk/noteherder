@@ -1,21 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+
+import './App.css'
+import Main from './Main'
 
 class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      notes: {
+        'note-1': {
+          id: 'note-1',
+          title: 'My fancy note from App',
+          body: 'This note is so fancy!',
+        },
+        'note-2': {
+          id: 'note-2',
+          title: 'Another one from App',
+          body: 'Also very fancy',
+        },
+      },
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Main notes={this.state.notes} />
       </div>
     );
   }
 }
 
-export default App;
+export default App
