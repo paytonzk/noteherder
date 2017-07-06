@@ -30,6 +30,10 @@ class App extends Component {
       </div>
     );
   }
+
+   updateForm = () =>{
+    
+  }
 }
 
 export default App
