@@ -8,39 +8,53 @@ class App extends Component {
     super()
 
     this.state = {
-      notes: {
-        'note-1': {
-          id: 'note-1',
-          title: 'My fancy note from App',
-          body: 'This note is so fancy!',
+      notes:  {
+        'note-4': {
+          id: 'note-4',
+          title: 'Still from App state',
+          body: 'The fanciest!'
         },
-        'note-2': {
-          id: 'note-2',
-          title: 'Another one from App',
+        'note-5': {
+          id: 'note-5',
+          title: 'Another one',
           body: 'Also very fancy',
         },
       },
-      currentNote: {
-        id: null,
-        title: '',
-        body: '',
-      },
+      currentNote: this.blankNote(),
     }
   }
 
-  render() {
-    return (
-      <div className="App">
-        <Main 
-        notes={this.state.notes} 
-        currentNote={this.state.currentNote}
-        setCurrentNote={this.setCurrentNote}/>
-      </div>
-    );
+  blankNote = () => {
+    return {
+      id: null,
+      title: '',
+      body: '',
+    }
   }
 
-   setCurrentNote = (note) => {
+  setCurrentNote = (note) => {
     this.setState({ currentNote: note })
+  }
+
+  resetCurrentNote = () => {
+    this.setCurrentNote(this.blankNote())
+  }
+
+  render() {
+    const actions = {
+      setCurrentNote: this.setCurrentNote,
+      resetCurrentNote: this.resetCurrentNote,
+    }
+
+    return (
+      <div className="App">
+        <Main
+          notes={this.state.notes}
+          currentNote={this.state.currentNote}
+          {...actions}
+        />
+      </div>
+    )
   }
 }
 
