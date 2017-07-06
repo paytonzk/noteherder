@@ -9,13 +9,18 @@ class NoteForm extends Component {
     this.props.saveNote(note)
   }
 
+  deleteNote = (ev) => {
+    const note = {...this.props.currentNote}
+    this.props.deleteNote(note)
+  }
+
   render() {
     const { currentNote } = this.props
 
     return (
       <div className="NoteForm">
         <div className="form-actions">
-          <button type="button">
+          <button type="button" onClick={this.deleteNote}>
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
