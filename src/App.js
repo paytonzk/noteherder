@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import base, {auth} from './base'
 
 import './App.css'
+import base, { auth } from './base'
 import Main from './Main'
-import SignIn from 'SignIn'
+import SignIn from './SignIn'
 
 class App extends Component {
   constructor() {
@@ -12,15 +12,32 @@ class App extends Component {
     this.state = {
       notes:  {},
       currentNote: this.blankNote(),
-      uid : null,
+      uid: null,
     }
   }
 
+  componentWillMount = () => {
+    auth.onAuthStateChanged(
+      (user) => {
+        if (user) {
+          // signed in
+          this.handleAuth(user)
+        } else {
+          // signed out
+          this.setState({ uid: null })
+        }
+      }
+    )
+  }
+
   componentDidMount = () => {
-    base.syncState('notes', {
-      context: this,
-      state: 'notes',
-    })
+    base.syncState(
+      'notes',
+      {
+        context: this,  // what object the state is on
+        state: 'notes', // which property to sync
+      }
+    )
   }
 
   blankNote = () => {
@@ -39,33 +56,35 @@ class App extends Component {
     this.setCurrentNote(this.blankNote())
   }
 
-  signedIn = () =>{
-    return this.state.uid
-  }
-
   saveNote = (note) => {
     const notes = {...this.state.notes}
-    if(!note.id){
+    if (!note.id) {
       note.id = Date.now()
     }
     notes[note.id] = note
-    this.setState({notes})
+
+    this.setState({ notes })
     this.setCurrentNote(note)
   }
 
-  deleteNote = (note) => {
+  removeCurrentNote = () => {
     const notes = {...this.state.notes}
     notes[this.state.currentNote.id] = null
-    this.setState({notes})
+
+    this.setState({ notes })
     this.resetCurrentNote()
   }
 
-  handleAuth = (result) =>{
-    this.setState({uid : result.user.uid})
+  signedIn = () => {
+    return this.state.uid
   }
 
-  signOut = () =>{
-    auth.signOut().then(() => this.setState({uid : null}))
+  handleAuth = (user) => {
+    this.setState({ uid: user.uid })
+  }
+
+  signOut = () => {
+    auth.signOut()
   }
 
   render() {
@@ -73,15 +92,22 @@ class App extends Component {
       setCurrentNote: this.setCurrentNote,
       resetCurrentNote: this.resetCurrentNote,
       saveNote: this.saveNote,
-      deleteNote: this.deleteNote,
-      signOut: this.signOut
+      removeCurrentNote: this.removeCurrentNote,
+      signOut: this.signOut,
+    }
+
+    const noteData = {
+      notes: this.state.notes,
+      currentNote: this.state.currentNote,
     }
 
     return (
       <div className="App">
-        {this.signedIn() ? <Main notes={this.state.notes}
-          currentNote={this.state.currentNote} {...actions} />
-          : <SignIn handleAuth={this.handleAuth} />}
+        {
+          this.signedIn()
+          ? <Main {...noteData} {...actions} />
+          : <SignIn />
+        }
       </div>
     )
   }
