@@ -12,11 +12,9 @@ const Note = ({ note, setCurrentNote }) => {
           <div className="note-title">
             {note.title}
           </div>
-          <div className="note-body">
-            <p>
-              {note.body}
-            </p>
-          </div>
+          <div className="note-body"
+          dangerouslySetInnerHTML={{__html: note.body}}
+          ></div>
         </div>
       </li>
     </a>
