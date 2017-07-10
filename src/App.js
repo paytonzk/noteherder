@@ -20,10 +20,8 @@ class App extends Component {
     auth.onAuthStateChanged(
       (user) => {
         if (user) {
-          // signed in
           this.handleAuth(user)
         } else {
-          // signed out
           this.setState({ uid: null })
         }
       }
@@ -34,8 +32,8 @@ class App extends Component {
     base.syncState(
       'notes',
       {
-        context: this,  // what object the state is on
-        state: 'notes', // which property to sync
+        context: this,
+        state: 'notes',
       }
     )
   }
