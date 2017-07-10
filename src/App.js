@@ -3,6 +3,7 @@ import base from './base'
 
 import './App.css'
 import Main from './Main'
+import SignIn from 'SignIn'
 
 class App extends Component {
   constructor() {
@@ -11,6 +12,7 @@ class App extends Component {
     this.state = {
       notes:  {},
       currentNote: this.blankNote(),
+      uid : null,
     }
   }
 
@@ -37,6 +39,10 @@ class App extends Component {
     this.setCurrentNote(this.blankNote())
   }
 
+  signedIn = () =>{
+    return this.state.uid
+  }
+
   saveNote = (note) => {
     const notes = {...this.state.notes}
     if(!note.id){
@@ -54,21 +60,28 @@ class App extends Component {
     this.resetCurrentNote()
   }
 
+  handleAuth = () =>{
+    this.setState({uid : 'paytonzk'})
+  }
+
+  signOut = () =>{
+    this.setState({uid : null})
+  }
+
   render() {
     const actions = {
       setCurrentNote: this.setCurrentNote,
       resetCurrentNote: this.resetCurrentNote,
       saveNote: this.saveNote,
-      deleteNote: this.deleteNote
+      deleteNote: this.deleteNote,
+      signOut: this.signOut
     }
 
     return (
       <div className="App">
-        <Main
-          notes={this.state.notes}
-          currentNote={this.state.currentNote}
-          {...actions}
-        />
+        {this.signedIn() ? <Main notes={this.state.notes}
+          currentNote={this.state.currentNote} {...actions} />
+          : <SignIn handleAuth={this.handleAuth} />}
       </div>
     )
   }
