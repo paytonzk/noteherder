@@ -11,7 +11,7 @@ class App extends Component {
 
     this.state = {
       notes:  {},
-      currentNote: this.blankNote(),
+      currentNoteId: null,
       uid: null,
     }
   }
@@ -21,9 +21,11 @@ class App extends Component {
     auth.onAuthStateChanged(
       (user) => {
         if (user) {
+          // signed in
           this.handleAuth(user)
         } else {
-          this.handleUnAuth()
+          // signed out
+          this.handleUnauth()
         }
       }
     )
@@ -31,34 +33,26 @@ class App extends Component {
 
   getUserFromLocalStorage = () => {
     const uid = localStorage.getItem('uid')
-    if(!uid) return
-    this.setState({uid})
+    if (!uid) return
+    this.setState({ uid })
   }
 
   syncNotes = () => {
     this.bindingRef = base.syncState(
       `notes/${this.state.uid}`,
       {
-        context: this,
-        state: 'notes',
+        context: this,  // what object the state is on
+        state: 'notes', // which property to sync
       }
     )
   }
 
-  blankNote = () => {
-    return {
-      id: null,
-      title: '',
-      body: '',
-    }
-  }
-
   setCurrentNote = (note) => {
-    this.setState({ currentNote: note })
+    this.setState({ currentNoteId: note.id })
   }
 
   resetCurrentNote = () => {
-    this.setCurrentNote(this.blankNote())
+    this.setCurrentNote({ id: null })
   }
 
   saveNote = (note) => {
@@ -74,7 +68,7 @@ class App extends Component {
 
   removeCurrentNote = () => {
     const notes = {...this.state.notes}
-    notes[this.state.currentNote.id] = null
+    notes[this.state.currentNoteId] = null
 
     this.setState({ notes })
     this.resetCurrentNote()
@@ -92,12 +86,18 @@ class App extends Component {
     )
   }
 
-  handleUnAuth = () =>{
+  handleUnauth = () => {
     localStorage.removeItem('uid')
-    if(this.bindingRef){
-    base.removeBinding(this.bindingRef)
-  }
-    this.setState({uid: null, notes: {}})
+
+    if (this.bindingRef) {
+      base.removeBinding(this.bindingRef)
+    }
+
+    this.setState({
+      uid: null,
+      notes: {},
+    })
+
     this.resetCurrentNote()
   }
 
@@ -116,7 +116,7 @@ class App extends Component {
 
     const noteData = {
       notes: this.state.notes,
-      currentNote: this.state.currentNote,
+      currentNoteId: this.state.currentNoteId,
     }
 
     return (
