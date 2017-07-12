@@ -123,14 +123,22 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-in" 
+          render={() => {
+            this.signedIn()
+            ?<Redirect to="/notes" />
+            :<SignIn />
+          }
+          } />
           <Route
             path="/notes"
             render={() => (
-              <Main
+              this.signedIn()
+              ?<Main
                 {...actions}
                 {...noteData}
               />
+              :<Redirect to="/sign-in"/>
             )}
           />
         </Switch>
