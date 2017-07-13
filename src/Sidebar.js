@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import './Sidebar.css'
 import quill from './quill.svg'
@@ -27,7 +27,9 @@ const Sidebar = ({ signOut }) => {
         />
       </Link>
       <div className="SignOut">
-        <button onClick={signOut}>
+        <button
+          onClick={signOut}
+        >
           <i className="fa fa-sign-out"></i>
         </button>
       </div>

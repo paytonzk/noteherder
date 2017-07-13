@@ -1,8 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const Note = ({ note}) => {
-
+const Note = ({ note }) => {
   return (
     <NavLink to={`/notes/${note.id}`}>
       <li>
@@ -10,8 +9,9 @@ const Note = ({ note}) => {
           <div className="note-title">
             {note.title}
           </div>
-          <div className="note-body"
-          dangerouslySetInnerHTML={{__html: note.body}}
+          <div
+            className="note-body"
+            dangerouslySetInnerHTML={{ __html: note.body }}
           ></div>
         </div>
       </li>

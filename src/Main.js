@@ -11,12 +11,12 @@ const Main = (props) => {
     notes: props.notes,
     saveNote: props.saveNote,
     removeNote: props.removeNote,
-    firebaseNotesSynched: props.firebaseNotesSynched,
+    firebaseNotesSynced: props.firebaseNotesSynced,
   }
 
   return (
     <div className="Main">
-      <Sidebar signOut={props.signOut}/>
+      <Sidebar signOut={props.signOut} />
       <NoteList notes={props.notes} />
 
       <Switch>
