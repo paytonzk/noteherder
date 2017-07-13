@@ -2,6 +2,9 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 const Note = ({ note }) => {
+  state={
+    updateAt: Date.now
+  }
   return (
     <NavLink to={`/notes/${note.id}`}>
       <li>
